@@ -12,8 +12,8 @@ export const Orderbook = () => {
 
   const dispatch = useAppDispatch();
 
-  const asks = useAppSelector((state) => state.orderbook.asks);
-  const bids = useAppSelector((state) => state.orderbook.bids);
+  const asks = useAppSelector((state) => state.orderbook.render.asks);
+  const bids = useAppSelector((state) => state.orderbook.render.bids);
 
   const onTogglePress = () => {
     dispatch(toggleProduct());

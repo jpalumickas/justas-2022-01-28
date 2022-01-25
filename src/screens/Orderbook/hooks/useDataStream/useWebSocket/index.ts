@@ -51,14 +51,14 @@ export const useWebSocket = () => {
   );
 
   useEffect(() => {
-    if (!connected) return;
-    if (appProductId === currentProductId) {
+    if (!connected || appProductId === currentProductId) {
       return;
     }
 
     if (currentProductId) {
       unsubscribeProduct(currentProductId);
     }
+
     subscribeProduct(appProductId);
   }, [
     appProductId,

@@ -10,6 +10,10 @@ export interface OrderbookState {
   productId: string;
   asks: Item[];
   bids: Item[];
+  render: {
+    asks: Item[];
+    bids: Item[];
+  };
 }
 
 type MessageData = {
@@ -40,6 +44,10 @@ const initialState: OrderbookState = {
   productId: 'PI_XBTUSD',
   asks: [],
   bids: [],
+  render: {
+    asks: [],
+    bids: [],
+  },
 };
 
 export const orderbookSlice = createSlice({
@@ -60,15 +68,21 @@ export const orderbookSlice = createSlice({
       state.bids = mergeItem(action.payload, state, 'bids');
       state.asks = mergeItem(action.payload, state, 'asks');
     },
+    setRenderData: (state) => {
+      state.render.asks = state.asks;
+      state.render.bids = state.bids;
+    },
     toggleProduct: (state) => {
       state.bids = [];
       state.asks = [];
+      state.render = initialState.render;
       state.productId =
         state.productId === 'PI_XBTUSD' ? 'PI_ETHUSD' : 'PI_XBTUSD';
     },
   },
 });
 
-export const { setData, mergeData, toggleProduct } = orderbookSlice.actions;
+export const { setData, mergeData, setRenderData, toggleProduct } =
+  orderbookSlice.actions;
 
 export default orderbookSlice.reducer;
