@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { uniqBy, zipObject } from 'lodash';
+import { isEmpty, uniqBy, zipObject } from 'lodash';
 
 type Item = {
   price: number;
@@ -7,6 +7,7 @@ type Item = {
 };
 
 export interface OrderbookState {
+  productId: string;
   asks: Item[];
   bids: Item[];
 }
@@ -26,7 +27,7 @@ const mergeItem = (
   state: OrderbookState,
   key: 'asks' | 'bids',
 ) => {
-  if (!data[key] || data[key].length === 0) {
+  if (isEmpty(data[key])) {
     return state[key];
   }
 
@@ -36,6 +37,7 @@ const mergeItem = (
 };
 
 const initialState: OrderbookState = {
+  productId: 'PI_XBTUSD',
   asks: [],
   bids: [],
 };
@@ -58,9 +60,15 @@ export const orderbookSlice = createSlice({
       state.bids = mergeItem(action.payload, state, 'bids');
       state.asks = mergeItem(action.payload, state, 'asks');
     },
+    toggleProduct: (state) => {
+      state.bids = [];
+      state.asks = [];
+      state.productId =
+        state.productId === 'PI_XBTUSD' ? 'PI_ETHUSD' : 'PI_XBTUSD';
+    },
   },
 });
 
-export const { setData, mergeData } = orderbookSlice.actions;
+export const { setData, mergeData, toggleProduct } = orderbookSlice.actions;
 
 export default orderbookSlice.reducer;
