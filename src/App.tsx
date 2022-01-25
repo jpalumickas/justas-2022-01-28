@@ -1,15 +1,19 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
+import { ThemeProvider } from '@emotion/react';
 import { store } from '~/store';
+import { theme } from '~/theme';
 
 import { Orderbook } from '~/screens/Orderbook';
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <Orderbook />
-    </Provider>
-  )
+    <ReduxProvider store={store}>
+      <ThemeProvider theme={theme}>
+        <Orderbook />
+      </ThemeProvider>
+    </ReduxProvider>
+  );
 };
 
 export default App;
