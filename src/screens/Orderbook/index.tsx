@@ -1,20 +1,10 @@
 import React from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { StatusBar } from 'react-native';
 import { take, orderBy } from 'lodash';
 import { useAppSelector } from '~/hooks';
 import { useDataStream } from './hooks/useDataStream';
-
-const keyExtractor = (item) => item.price;
-
-const renderItem = ({ item: bid }) => {
-  return (
-    <View key={bid.price}>
-      <Text>
-        Price: {bid.price} Size: {bid.size}
-      </Text>
-    </View>
-  );
-};
+import { Box, Text, SafeAreaView } from '~/components';
+import { List } from './List';
 
 export const Orderbook = () => {
   useDataStream();
@@ -23,20 +13,16 @@ export const Orderbook = () => {
   const bids = useAppSelector((state) => state.orderbook.bids);
 
   return (
-    <View>
-      <FlatList
-        style={{ height: 300 }}
-        data={take(orderBy(bids, ['price'], ['desc']), 10)}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-      />
-
-      <FlatList
-        style={{ height: 300 }}
-        data={take(orderBy(asks, ['price'], ['asc']), 10)}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-      />
-    </View>
+    <SafeAreaView>
+      <StatusBar barStyle="light-content" />
+      <Box flex={1} backgroundColor="gray-900">
+        <Text fontSize="lg">Order Book</Text>
+        <Text>x</Text>
+        <Text>x</Text>
+        <Text>x</Text>
+        <List items={take(orderBy(bids, ['price'], ['desc']), 10)} />
+        <List items={take(orderBy(asks, ['price'], ['asc']), 10)} />
+      </Box>
+    </SafeAreaView>
   );
 };
