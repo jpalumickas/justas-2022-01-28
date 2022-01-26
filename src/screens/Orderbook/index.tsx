@@ -1,19 +1,16 @@
 import React from 'react';
 import { StatusBar, Pressable } from 'react-native';
-import { take, takeRight, orderBy } from 'lodash';
-import { useAppSelector, useAppDispatch } from '~/hooks';
+import { useAppDispatch } from '~/hooks';
 import { useDataStream } from './hooks/useDataStream';
 import { Box, Text, SafeAreaView } from '~/components';
-import { List } from './List';
 import { toggleProduct } from '~/store/slices/orderbook';
+import { AsksList } from './AsksList';
+import { BidsList } from './BidsList';
 
 export const Orderbook = () => {
   useDataStream();
 
   const dispatch = useAppDispatch();
-
-  const asks = useAppSelector((state) => state.orderbook.render.asks);
-  const bids = useAppSelector((state) => state.orderbook.render.bids);
 
   const onTogglePress = () => {
     dispatch(toggleProduct());
@@ -24,12 +21,27 @@ export const Orderbook = () => {
       <StatusBar barStyle="light-content" />
       <Box flex={1} backgroundColor="gray-900">
         <Text fontSize="lg">Order Book</Text>
-        <Text>x</Text>
-        <Text>x</Text>
+        <Box
+          flexDirection="row"
+          paddingX={8}
+          paddingY={2}
+          borderTopWidth={1}
+          borderBottomWidth={1}
+        >
+          <Box flex={1} alignItems="flex-end">
+            <Text fontSize="sm">PRICE</Text>
+          </Box>
+          <Box flex={1} alignItems="flex-end">
+            <Text fontSize="sm">SIZE</Text>
+          </Box>
+          <Box flex={1} alignItems="flex-end">
+            <Text fontSize="sm">TOTAL</Text>
+          </Box>
+        </Box>
         <Text color="red">Asks</Text>
-        <List items={takeRight(asks, 10)} />
+        <AsksList />
         <Text color="green">Bids</Text>
-        <List items={take(bids, 10)} />
+        <BidsList />
       </Box>
       <Pressable onPress={onTogglePress}>
         <Text>Toggle</Text>

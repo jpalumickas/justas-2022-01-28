@@ -1,25 +1,20 @@
 import React, { FC } from 'react';
 import { FlatList } from 'react-native';
-import { Box, Text } from '~/components';
 import { OrderbookItem } from '../types';
+import Item from './Item';
 
 const keyExtractor = (item: OrderbookItem) => item.price.toString();
 
 const renderItem = ({ item }: { item: OrderbookItem }) => {
-  return (
-    <Box>
-      <Text>
-        Price: {item.price} Size: {item.size} Total: {item.total}
-      </Text>
-    </Box>
-  );
+  return <Item item={item} />;
 };
 
 type Props = {
   items: OrderbookItem[];
+  type: 'asks' | 'bids';
 };
 
-export const List: FC<Props> = ({ items }) => {
+export const List: FC<Props> = ({ items, type }) => {
   return (
     <FlatList
       style={{ height: 300 }}
