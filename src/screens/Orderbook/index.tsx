@@ -5,6 +5,7 @@ import { Box, Text, SafeAreaView } from '~/components';
 import { AsksList } from './AsksList';
 import { BidsList } from './BidsList';
 import { Footer } from './Footer';
+import { Spread } from './Spread';
 
 export const Orderbook = () => {
   useDataStream();
@@ -44,6 +45,7 @@ export const Orderbook = () => {
           </Box>
         </Box>
         <AsksList />
+        <Spread />
         <BidsList />
         <Footer />
       </Box>

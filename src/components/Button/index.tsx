@@ -16,7 +16,9 @@ export const Button: FC<Props> = ({ children, onPress }) => {
         paddingY={2}
         borderRadius="sm"
       >
-        <Text color="white">{children}</Text>
+        <Text fontWeight="semi-bold" color="white">
+          {children}
+        </Text>
       </Box>
     </Pressable>
   );
