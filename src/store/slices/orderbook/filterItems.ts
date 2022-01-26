@@ -1,4 +1,4 @@
-import { Item } from './types';
+import { OrderbookItem } from './types';
 
-export const filterItems = (items: Item[]) =>
+export const filterItems = (items: OrderbookItem[]) =>
   items.filter((item) => item.size > 0);

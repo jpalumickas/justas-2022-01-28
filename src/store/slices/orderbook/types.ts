@@ -1,15 +1,21 @@
-export type Item = {
+export type OrderbookItem = {
   price: number;
   size: number;
 };
 
+export type RenderItem = {
+  price: number;
+  size: number;
+  total: number;
+};
+
 export interface OrderbookState {
   productId: string;
-  asks: Item[];
-  bids: Item[];
+  asks: OrderbookItem[];
+  bids: OrderbookItem[];
   render: {
-    asks: Item[];
-    bids: Item[];
+    asks: RenderItem[];
+    bids: RenderItem[];
   };
 }
 

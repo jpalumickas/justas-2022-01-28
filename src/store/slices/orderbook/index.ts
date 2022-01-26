@@ -1,5 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { OrderbookState, MessageData } from './types';
+import { orderBy, reduce, reduceRight } from 'lodash';
+import {
+  OrderbookState,
+  OrderbookItem,
+  RenderItem,
+  MessageData,
+} from './types';
 import { mergeItem } from './mergeItem';
 import { setItem } from './setItem';
 
@@ -11,6 +17,25 @@ const initialState: OrderbookState = {
     asks: [],
     bids: [],
   },
+};
+
+const processItems = (items: OrderbookItem[], type: 'asks' | 'bids') => {
+  const orderedItems = orderBy(items, ['price'], ['desc']);
+
+  const iterator = type === 'asks' ? reduceRight : reduce;
+
+  return iterator<OrderbookItem, RenderItem[]>(
+    orderedItems,
+    (list, item) => {
+      const newItem = {
+        ...item,
+        total: list[0] ? list[0].total + item.size : item.size,
+      };
+
+      return type === 'asks' ? [newItem, ...list] : [...list, newItem];
+    },
+    [],
+  );
 };
 
 export const orderbookSlice = createSlice({
@@ -26,8 +51,8 @@ export const orderbookSlice = createSlice({
       state.bids = mergeItem(action.payload, state, 'bids');
     },
     setRenderData: (state) => {
-      state.render.asks = state.asks;
-      state.render.bids = state.bids;
+      state.render.asks = processItems(state.asks, 'asks');
+      state.render.bids = processItems(state.bids, 'bids');
     },
     toggleProduct: (state) => {
       state.bids = [];

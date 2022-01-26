@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, Pressable } from 'react-native';
-import { take, orderBy } from 'lodash';
+import { take, takeRight, orderBy } from 'lodash';
 import { useAppSelector, useAppDispatch } from '~/hooks';
 import { useDataStream } from './hooks/useDataStream';
 import { Box, Text, SafeAreaView } from '~/components';
@@ -26,9 +26,10 @@ export const Orderbook = () => {
         <Text fontSize="lg">Order Book</Text>
         <Text>x</Text>
         <Text>x</Text>
-        <Text>x</Text>
-        <List items={take(orderBy(bids, ['price'], ['desc']), 10)} />
-        <List items={take(orderBy(asks, ['price'], ['asc']), 10)} />
+        <Text color="red">Asks</Text>
+        <List items={takeRight(asks, 10)} />
+        <Text color="green">Bids</Text>
+        <List items={take(bids, 10)} />
       </Box>
       <Pressable onPress={onTogglePress}>
         <Text>Toggle</Text>

@@ -9,7 +9,7 @@ const renderItem = ({ item }: { item: OrderbookItem }) => {
   return (
     <Box>
       <Text>
-        Price: {item.price} Size: {item.size}
+        Price: {item.price} Size: {item.size} Total: {item.total}
       </Text>
     </Box>
   );
