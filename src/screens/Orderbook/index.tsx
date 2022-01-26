@@ -44,9 +44,11 @@ export const Orderbook = () => {
             </Text>
           </Box>
         </Box>
-        <AsksList />
-        <Spread />
-        <BidsList />
+        <Box>
+          <AsksList />
+          <Spread />
+          <BidsList />
+        </Box>
         <Footer />
       </Box>
     </SafeAreaView>

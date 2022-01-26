@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { orderBy, reduce, reduceRight } from 'lodash';
+import { take, takeRight, orderBy, reduce, reduceRight } from 'lodash';
 import {
   OrderbookState,
   OrderbookItem,
@@ -14,6 +14,7 @@ const initialState: OrderbookState = {
   asks: [],
   bids: [],
   render: {
+    limit: 8,
     asks: [],
     bids: [],
   },
@@ -51,8 +52,14 @@ export const orderbookSlice = createSlice({
       state.bids = mergeItem(action.payload, state, 'bids');
     },
     setRenderData: (state) => {
-      state.render.asks = processItems(state.asks, 'asks');
-      state.render.bids = processItems(state.bids, 'bids');
+      state.render.asks = takeRight(
+        processItems(state.asks, 'asks'),
+        state.render.limit,
+      );
+      state.render.bids = take(
+        processItems(state.bids, 'bids'),
+        state.render.limit,
+      );
     },
     toggleProduct: (state) => {
       state.bids = [];

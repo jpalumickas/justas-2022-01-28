@@ -21,7 +21,7 @@ export const Spread = () => {
   return (
     <Box alignItems="center" justifyContent="center" height={8}>
       <Text textAlign="center" color="gray-600">
-        Spread: {spread.toFixed(1)} ({spreadPercent}%)
+        Spread: {spread.toFixed(1)} ({spreadPercent.toFixed(2)}%)
       </Text>
     </Box>
   );

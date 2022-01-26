@@ -14,6 +14,7 @@ export interface OrderbookState {
   asks: OrderbookItem[];
   bids: OrderbookItem[];
   render: {
+    limit: number;
     asks: RenderItem[];
     bids: RenderItem[];
   };
