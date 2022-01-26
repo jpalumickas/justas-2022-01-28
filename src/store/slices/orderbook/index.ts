@@ -1,13 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { take, takeRight, orderBy, reduce, reduceRight } from 'lodash';
-import {
-  OrderbookState,
-  OrderbookItem,
-  RenderItem,
-  MessageData,
-} from './types';
+import { take, takeRight } from 'lodash';
+import { OrderbookState, MessageData } from './types';
 import { mergeItem } from './mergeItem';
 import { setItem } from './setItem';
+import { processItems } from './processItems';
 
 const initialState: OrderbookState = {
   productId: 'PI_XBTUSD',
@@ -17,33 +13,15 @@ const initialState: OrderbookState = {
     limit: 8,
     asks: [],
     bids: [],
+    highestTotal: 0,
   },
-};
-
-const processItems = (items: OrderbookItem[], type: 'asks' | 'bids') => {
-  const orderedItems = orderBy(items, ['price'], ['desc']);
-
-  const iterator = type === 'asks' ? reduceRight : reduce;
-
-  return iterator<OrderbookItem, RenderItem[]>(
-    orderedItems,
-    (list, item) => {
-      const newItem = {
-        ...item,
-        total: list[0] ? list[0].total + item.size : item.size,
-      };
-
-      return type === 'asks' ? [newItem, ...list] : [...list, newItem];
-    },
-    [],
-  );
 };
 
 export const orderbookSlice = createSlice({
   name: 'orderbook',
   initialState,
   reducers: {
-    setData: (state, action: PayloadAction<MessageData>) => {
+    snapshotData: (state, action: PayloadAction<MessageData>) => {
       state.asks = setItem(action.payload, state, 'asks');
       state.bids = setItem(action.payload, state, 'bids');
     },
@@ -60,6 +38,12 @@ export const orderbookSlice = createSlice({
         processItems(state.bids, 'bids'),
         state.render.limit,
       );
+
+      const totals = [...state.render.asks, ...state.render.bids].map(
+        (item) => item.total,
+      );
+
+      state.render.highestTotal = Math.max(...totals);
     },
     toggleProduct: (state) => {
       state.bids = [];
@@ -71,7 +55,7 @@ export const orderbookSlice = createSlice({
   },
 });
 
-export const { setData, mergeData, setRenderData, toggleProduct } =
+export const { snapshotData, mergeData, setRenderData, toggleProduct } =
   orderbookSlice.actions;
 
 export default orderbookSlice.reducer;

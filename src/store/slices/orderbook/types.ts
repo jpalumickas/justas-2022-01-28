@@ -17,6 +17,7 @@ export interface OrderbookState {
     limit: number;
     asks: RenderItem[];
     bids: RenderItem[];
+    highestTotal: number;
   };
 }
 

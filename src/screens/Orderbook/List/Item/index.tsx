@@ -11,12 +11,7 @@ type Props = {
 };
 
 const maxTotalSelector = (state: RootState) => {
-  const totals = [
-    ...state.orderbook.render.asks,
-    ...state.orderbook.render.bids,
-  ].map((item) => item.total);
-
-  return Math.max(...totals);
+  return state.orderbook.render.highestTotal;
 };
 
 const Item: FC<Props> = ({ item, type }) => {
