@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
 import { OrderbookState, MessageData } from './types';
-import { filterItems } from './filterItems';
-import { arrayDataToObj } from './arrayDataToObj';
+import { filterItems } from '../filterItems';
+import { arrayDataToObj } from '../arrayDataToObj';
 
 export const setItem = (
   data: MessageData,

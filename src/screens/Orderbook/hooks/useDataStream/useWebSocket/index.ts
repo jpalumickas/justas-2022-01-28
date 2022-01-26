@@ -1,16 +1,21 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { useAppSelector } from '~/hooks';
 
-export const useWebSocket = () => {
+type Props = {
+  onMessage?: (event: WebSocketMessageEvent) => void;
+};
+
+export const useWebSocket = ({ onMessage }: Props = {}) => {
   const appProductId = useAppSelector((state) => state.orderbook.productId);
-  const webSocketRef = useRef(
-    new WebSocket(process.env.ORDERBOOK_WEBSOCKET_URL),
+  const isWebSocketPaused = useAppSelector(
+    (state) => state.orderbook.isWebSocketPaused,
   );
+  const webSocketRef = useRef<WebSocket | null>(null);
   const [connected, setConnected] = useState(false);
   const [currentProductId, setCurrentProductId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const { current: webSocket } = webSocketRef;
+  const openConnection = useCallback(() => {
+    webSocketRef.current = new WebSocket(process.env.ORDERBOOK_WEBSOCKET_URL);
 
     webSocketRef.current.onopen = () => {
       setConnected(true);
@@ -20,11 +25,25 @@ export const useWebSocket = () => {
       setConnected(false);
     };
 
+    return webSocketRef.current;
+  }, []);
+
+  useEffect(() => {
+    const webSocket = openConnection();
+
     return () => webSocket.close();
-  }, [webSocketRef]);
+  }, [openConnection]);
+
+  useEffect(() => {
+    if (webSocketRef.current && onMessage) {
+      webSocketRef.current.onmessage = onMessage;
+    }
+  }, [connected, onMessage, webSocketRef]);
 
   const subscribeProduct = useCallback(
     (productId: string) => {
+      if (!webSocketRef.current) return;
+
       setCurrentProductId(productId);
       webSocketRef.current.send(
         JSON.stringify({
@@ -39,6 +58,9 @@ export const useWebSocket = () => {
 
   const unsubscribeProduct = useCallback(
     (productId: string) => {
+      if (!webSocketRef.current) return;
+
+      setCurrentProductId(null);
       webSocketRef.current.send(
         JSON.stringify({
           event: 'unsubscribe',
@@ -51,6 +73,13 @@ export const useWebSocket = () => {
   );
 
   useEffect(() => {
+    if (isWebSocketPaused) {
+      if (currentProductId) {
+        unsubscribeProduct(currentProductId);
+      }
+
+      return;
+    }
     if (!connected || appProductId === currentProductId) {
       return;
     }
@@ -61,6 +90,7 @@ export const useWebSocket = () => {
 
     subscribeProduct(appProductId);
   }, [
+    isWebSocketPaused,
     appProductId,
     currentProductId,
     subscribeProduct,

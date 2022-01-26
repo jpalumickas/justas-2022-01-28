@@ -11,6 +11,7 @@ export type RenderItem = {
 
 export interface OrderbookState {
   productId: string;
+  isWebSocketPaused: boolean;
   asks: OrderbookItem[];
   bids: OrderbookItem[];
   render: {

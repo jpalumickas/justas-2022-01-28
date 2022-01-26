@@ -2,8 +2,8 @@ import { Platform } from 'react-native';
 
 export const getThrottleTime = () => {
   if (Platform.OS === 'ios') {
-    return 280;
+    return 300;
   }
 
-  return 320;
+  return 400;
 };

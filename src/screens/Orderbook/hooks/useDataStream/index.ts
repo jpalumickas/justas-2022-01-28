@@ -1,18 +1,17 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useWebSocket } from './useWebSocket';
 import { useOnMessage } from './useOnMessage';
+import { useAppDispatch, useAppStateChange } from '~/hooks';
+import { pauseWebSocket } from '~/store/slices/orderbook';
 
 export const useDataStream = () => {
-  const { connected, webSocket, subscribeProduct } = useWebSocket();
+  const dispatch = useAppDispatch();
   const onMessage = useOnMessage();
+  useWebSocket({ onMessage });
 
-  useEffect(() => {
-    webSocket.onmessage = onMessage;
-  }, [onMessage, webSocket]);
+  const onBackground = useCallback(() => {
+    dispatch(pauseWebSocket());
+  }, [dispatch]);
 
-  useEffect(() => {
-    if (connected) {
-      // subscribeProduct('PI_XBTUSD')
-    }
-  }, [connected, subscribeProduct]);
+  useAppStateChange({ onBackground });
 };
