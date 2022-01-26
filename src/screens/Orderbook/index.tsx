@@ -1,20 +1,13 @@
 import React from 'react';
-import { StatusBar, Pressable } from 'react-native';
-import { useAppDispatch } from '~/hooks';
+import { StatusBar } from 'react-native';
 import { useDataStream } from './hooks/useDataStream';
 import { Box, Text, SafeAreaView } from '~/components';
-import { toggleProduct } from '~/store/slices/orderbook';
 import { AsksList } from './AsksList';
 import { BidsList } from './BidsList';
+import { Footer } from './Footer';
 
 export const Orderbook = () => {
   useDataStream();
-
-  const dispatch = useAppDispatch();
-
-  const onTogglePress = () => {
-    dispatch(toggleProduct());
-  };
 
   return (
     <SafeAreaView>
@@ -52,10 +45,8 @@ export const Orderbook = () => {
         </Box>
         <AsksList />
         <BidsList />
+        <Footer />
       </Box>
-      <Pressable onPress={onTogglePress}>
-        <Text>Toggle</Text>
-      </Pressable>
     </SafeAreaView>
   );
 };

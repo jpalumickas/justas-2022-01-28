@@ -34,4 +34,4 @@ const Item: FC<Props> = ({ item, type }) => {
   );
 };
 
-export default Item;
+export default memo(Item);

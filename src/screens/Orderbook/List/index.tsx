@@ -20,7 +20,7 @@ export const List: FC<Props> = ({ items, type }) => {
 
   return (
     <FlatList
-      style={{ height: 300 }}
+      scrollEnabled={false}
       data={items}
       keyExtractor={keyExtractor}
       renderItem={renderItem}

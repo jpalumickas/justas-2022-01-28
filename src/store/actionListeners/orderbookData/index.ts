@@ -2,6 +2,9 @@ import { isAnyOf } from '@reduxjs/toolkit';
 import { ActionListenerMiddleware } from '@rtk-incubator/action-listener-middleware';
 import { throttle } from 'lodash';
 import { setData, mergeData, setRenderData } from '~/store/slices/orderbook';
+import { getThrottleTime } from './getThrottleTime';
+
+const throttleTime = getThrottleTime();
 
 export const addOrderbookDataListener = (
   middleware: ActionListenerMiddleware,
@@ -10,6 +13,6 @@ export const addOrderbookDataListener = (
     matcher: isAnyOf(setData, mergeData),
     listener: throttle(async (action, listenerApi) => {
       listenerApi.dispatch(setRenderData());
-    }, 250),
+    }, throttleTime),
   });
 };
