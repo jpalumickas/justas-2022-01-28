@@ -5,19 +5,30 @@ import { formatNumber } from './lib/formatNumber';
 
 type Props = {
   item: OrderbookItem;
+  type: 'asks' | 'bids';
 };
 
-const Item: FC<Props> = ({ item }) => {
+const Item: FC<Props> = ({ item, type }) => {
   return (
     <Box flexDirection="row" paddingX={8} paddingY={2}>
       <Box flex={1} alignItems="flex-end">
-        <Text fontSize="sm">{formatNumber(item.price)}</Text>
+        <Text
+          fontWeight="semi-bold"
+          color={type === 'asks' ? 'red-500' : 'green-500'}
+          fontSize="sm"
+        >
+          {formatNumber(item.price)}
+        </Text>
       </Box>
       <Box flex={1} alignItems="flex-end">
-        <Text fontSize="sm">{formatNumber(item.size)}</Text>
+        <Text fontWeight="semi-bold" fontSize="sm">
+          {formatNumber(item.size)}
+        </Text>
       </Box>
       <Box flex={1} alignItems="flex-end">
-        <Text fontSize="sm">{formatNumber(item.total)}</Text>
+        <Text fontWeight="semi-bold" fontSize="sm">
+          {formatNumber(item.total)}
+        </Text>
       </Box>
     </Box>
   );

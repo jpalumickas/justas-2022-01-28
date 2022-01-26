@@ -10,6 +10,6 @@ export const addOrderbookDataListener = (
     matcher: isAnyOf(setData, mergeData),
     listener: throttle(async (action, listenerApi) => {
       listenerApi.dispatch(setRenderData());
-    }, 200),
+    }, 250),
   });
 };

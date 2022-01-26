@@ -20,27 +20,37 @@ export const Orderbook = () => {
     <SafeAreaView>
       <StatusBar barStyle="light-content" />
       <Box flex={1} backgroundColor="gray-900">
-        <Text fontSize="lg">Order Book</Text>
+        <Box paddingX={4} height={8}>
+          <Text fontWeight="semi-bold" fontSize="lg">
+            Order Book
+          </Text>
+        </Box>
         <Box
           flexDirection="row"
           paddingX={8}
           paddingY={2}
+          borderTopColor="gray-600"
+          borderBottomColor="gray-700"
           borderTopWidth={1}
           borderBottomWidth={1}
         >
           <Box flex={1} alignItems="flex-end">
-            <Text fontSize="sm">PRICE</Text>
+            <Text fontWeight="semi-bold" color="gray-600" fontSize="sm">
+              PRICE
+            </Text>
           </Box>
           <Box flex={1} alignItems="flex-end">
-            <Text fontSize="sm">SIZE</Text>
+            <Text fontWeight="semi-bold" color="gray-600" fontSize="sm">
+              SIZE
+            </Text>
           </Box>
           <Box flex={1} alignItems="flex-end">
-            <Text fontSize="sm">TOTAL</Text>
+            <Text fontWeight="semi-bold" color="gray-600" fontSize="sm">
+              TOTAL
+            </Text>
           </Box>
         </Box>
-        <Text color="red">Asks</Text>
         <AsksList />
-        <Text color="green">Bids</Text>
         <BidsList />
       </Box>
       <Pressable onPress={onTogglePress}>
