@@ -50,6 +50,9 @@ export const orderbookSlice = createSlice({
 
       state.render.highestTotal = Math.max(...totals);
     },
+    setRenderLimit: (state, action: PayloadAction<number>) => {
+      state.render.limit = action.payload;
+    },
     pauseWebSocket: (state) => {
       state.webSocket.isPaused = true;
     },
@@ -87,6 +90,7 @@ export const {
   webSocketConnected,
   webSocketDisconnected,
   setWebSocketError,
+  setRenderLimit,
 } = orderbookSlice.actions;
 
 export default orderbookSlice.reducer;

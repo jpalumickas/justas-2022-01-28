@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { memo } from 'react';
 import _ from 'lodash';
 import { Box, Text } from '~/components';
 import { RootState } from '~/store';
 import { useAppSelector } from '~/hooks';
 
 const selector = (state: RootState) => {
-  const lowestAsk = _.last(state.orderbook.render.asks)?.price || 0;
-  const highestBid = _.first(state.orderbook.render.bids)?.price || 0;
+  const lowestAsk = _.last(state.orderbook.render.asks)?.price;
+  const highestBid = _.first(state.orderbook.render.bids)?.price;
 
   return { lowestAsk, highestBid };
 };
 
-export const Spread = () => {
+export const Spread = memo(() => {
   const { lowestAsk, highestBid } = useAppSelector(selector);
+
+  if (!lowestAsk || !highestBid) {
+    return (
+      <Box alignItems="center" justifyContent="center" height={8}>
+        <Text color="gray-600">Loading...</Text>
+      </Box>
+    );
+  }
 
   const spread = Math.abs(highestBid - lowestAsk);
   const spreadPercent =
@@ -25,4 +33,4 @@ export const Spread = () => {
       </Text>
     </Box>
   );
-};
+});

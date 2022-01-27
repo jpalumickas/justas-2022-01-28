@@ -1,51 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
+import { useAppDispatch } from '~/hooks';
 import { useDataStream } from './hooks/useDataStream';
-import { Box, Text, SafeAreaView } from '~/components';
+import { Box, SafeAreaView } from '~/components';
+import { useScreenDimensions } from './hooks/useScreenDimensions';
+import { setRenderLimit } from '~/store/slices/orderbook';
 import { AsksList } from './AsksList';
 import { BidsList } from './BidsList';
+import { Header } from './Header';
 import { Footer } from './Footer';
 import { Spread } from './Spread';
 import { ConnectionTooltip } from './ConnectionTooltip';
 
 export const Orderbook = () => {
+  const dispatch = useAppDispatch();
+  const { itemsCount } = useScreenDimensions();
   useDataStream();
+
+  useEffect(() => {
+    dispatch(setRenderLimit(itemsCount));
+  }, [dispatch, itemsCount]);
 
   return (
     <>
       <SafeAreaView>
         <StatusBar barStyle="light-content" />
         <Box flex={1} backgroundColor="gray-900">
-          <Box paddingX={4} height={8}>
-            <Text fontWeight="semi-bold" fontSize="lg">
-              Order Book
-            </Text>
-          </Box>
-          <Box
-            flexDirection="row"
-            paddingX={8}
-            paddingY={2}
-            borderTopColor="gray-600"
-            borderBottomColor="gray-700"
-            borderTopWidth={1}
-            borderBottomWidth={1}
-          >
-            <Box flex={1} alignItems="flex-end">
-              <Text fontWeight="semi-bold" color="gray-600" fontSize="sm">
-                PRICE
-              </Text>
-            </Box>
-            <Box flex={1} alignItems="flex-end">
-              <Text fontWeight="semi-bold" color="gray-600" fontSize="sm">
-                SIZE
-              </Text>
-            </Box>
-            <Box flex={1} alignItems="flex-end">
-              <Text fontWeight="semi-bold" color="gray-600" fontSize="sm">
-                TOTAL
-              </Text>
-            </Box>
-          </Box>
+          <Header />
           <Box>
             <AsksList />
             <Spread />
