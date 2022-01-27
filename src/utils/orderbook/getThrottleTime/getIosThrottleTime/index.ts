@@ -1,10 +1,9 @@
-import { Platform } from 'react-native';
 import { getDeviceId } from 'react-native-device-info';
 
 // Throttle iOS devices by model year
-const getIosThrottleItem = (): number => {
+export const getIosThrottleTime = (): number => {
   const deviceId = getDeviceId(); // Example: iPhone7,2
-  const versionString = deviceId.replace('iPhone', '');
+  const versionString = deviceId?.replace('iPhone', '');
 
   if (!versionString) {
     return 500;
@@ -22,12 +21,4 @@ const getIosThrottleItem = (): number => {
   }
 
   return 800;
-};
-
-export const getThrottleTime = () => {
-  if (Platform.OS === 'ios') {
-    return getIosThrottleItem();
-  }
-
-  return 400;
 };

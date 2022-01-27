@@ -6,7 +6,7 @@ import {
   mergeData,
   setRenderData,
 } from '~/store/slices/orderbook';
-import { getThrottleTime } from '~/hooks/orderbook/getThrottleTime';
+import { getThrottleTime } from '~/utils/orderbook/getThrottleTime';
 
 const throttleTime = getThrottleTime();
 
