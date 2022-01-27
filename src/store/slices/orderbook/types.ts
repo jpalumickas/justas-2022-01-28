@@ -14,6 +14,7 @@ export interface OrderbookState {
   webSocket: {
     isPaused: boolean;
     isConnected: boolean;
+    error: null | string;
   };
   asks: OrderbookItem[];
   bids: OrderbookItem[];

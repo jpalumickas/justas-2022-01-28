@@ -10,6 +10,7 @@ const initialState: OrderbookState = {
   webSocket: {
     isPaused: false,
     isConnected: false,
+    error: null,
   },
   asks: [],
   bids: [],
@@ -55,8 +56,12 @@ export const orderbookSlice = createSlice({
     resumeWebSocket: (state) => {
       state.webSocket.isPaused = false;
     },
+    setWebSocketError: (state, action: PayloadAction<string>) => {
+      state.webSocket.error = action.payload;
+    },
     webSocketConnected: (state) => {
       state.webSocket.isConnected = true;
+      state.webSocket.error = null;
     },
     webSocketDisconnected: (state) => {
       state.webSocket.isConnected = false;
@@ -81,6 +86,7 @@ export const {
   resumeWebSocket,
   webSocketConnected,
   webSocketDisconnected,
+  setWebSocketError,
 } = orderbookSlice.actions;
 
 export default orderbookSlice.reducer;

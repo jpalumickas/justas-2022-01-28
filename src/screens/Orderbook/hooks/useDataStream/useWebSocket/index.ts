@@ -3,6 +3,7 @@ import { useAppDispatch } from '~/hooks';
 import {
   webSocketConnected,
   webSocketDisconnected,
+  setWebSocketError,
 } from '~/store/slices/orderbook';
 
 type Props = {
@@ -25,6 +26,12 @@ export const useWebSocket = ({ onMessage }: Props = {}) => {
     webSocketRef.current.onclose = () => {
       setConnected(false);
       dispatch(webSocketDisconnected());
+    };
+
+    webSocketRef.current.onerror = (error) => {
+      if (error.message) {
+        dispatch(setWebSocketError(error.message));
+      }
     };
 
     return webSocketRef.current;

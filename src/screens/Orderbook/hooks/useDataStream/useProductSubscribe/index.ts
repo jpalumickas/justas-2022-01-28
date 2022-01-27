@@ -49,6 +49,11 @@ export const useProductSubscribe = ({
   );
 
   useEffect(() => {
+    if (!isConnected) {
+      setCurrentProductId(null);
+      return;
+    }
+
     if (isPaused) {
       if (currentProductId) {
         unsubscribeProduct(currentProductId);
@@ -56,7 +61,7 @@ export const useProductSubscribe = ({
 
       return;
     }
-    if (!isConnected || appProductId === currentProductId) {
+    if (appProductId === currentProductId) {
       return;
     }
 

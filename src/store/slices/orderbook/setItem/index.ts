@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { OrderbookState, MessageData } from './types';
+import { OrderbookState, MessageData } from '../types';
 import { filterItems } from '../filterItems';
 import { arrayDataToObj } from '../arrayDataToObj';
 
