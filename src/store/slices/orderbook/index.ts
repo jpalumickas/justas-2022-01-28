@@ -56,6 +56,7 @@ export const orderbookSlice = createSlice({
       state.bids = [];
       state.asks = [];
       state.render = initialState.render;
+      state.isWebSocketPaused = false;
       state.productId =
         state.productId === 'PI_XBTUSD' ? 'PI_ETHUSD' : 'PI_XBTUSD';
     },

@@ -27,10 +27,8 @@ export const useAppStateChange = ({ onForeground, onBackground }: Props) => {
       appState.current = nextAppState;
     };
 
-    AppState.addEventListener('change', handleAppStateChange);
+    const listener = AppState.addEventListener('change', handleAppStateChange);
 
-    return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
-    };
+    return () => listener.remove();
   }, [onForeground, onBackground]);
 };

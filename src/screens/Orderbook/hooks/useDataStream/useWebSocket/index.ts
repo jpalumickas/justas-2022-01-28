@@ -42,7 +42,9 @@ export const useWebSocket = ({ onMessage }: Props = {}) => {
 
   const subscribeProduct = useCallback(
     (productId: string) => {
-      if (!webSocketRef.current) return;
+      if (!webSocketRef.current) {
+        return;
+      }
 
       setCurrentProductId(productId);
       webSocketRef.current.send(
@@ -58,7 +60,9 @@ export const useWebSocket = ({ onMessage }: Props = {}) => {
 
   const unsubscribeProduct = useCallback(
     (productId: string) => {
-      if (!webSocketRef.current) return;
+      if (!webSocketRef.current) {
+        return;
+      }
 
       setCurrentProductId(null);
       webSocketRef.current.send(
