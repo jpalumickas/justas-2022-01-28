@@ -1,14 +1,11 @@
-import { isEmpty } from 'lodash';
 import { OrderbookState, MessageData } from '../types';
 import { filterItems } from '../filterItems';
 import { arrayDataToObj } from '../arrayDataToObj';
 
-export const setItem = (
+export const snapshotItems = (
   data: MessageData,
   state: OrderbookState,
   key: 'asks' | 'bids',
 ) => {
-  return isEmpty(data[key])
-    ? state[key]
-    : filterItems(arrayDataToObj(data[key]));
+  return data[key] ? filterItems(arrayDataToObj(data[key])) : state[key];
 };

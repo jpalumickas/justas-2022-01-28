@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { take, takeRight } from 'lodash';
 import { OrderbookState, MessageData } from './types';
 import { mergeItem } from './mergeItem';
-import { setItem } from './setItem';
+import { snapshotItems } from './snapshotItems';
 import { processItems } from './processItems';
 
 const initialState: OrderbookState = {
@@ -27,8 +27,8 @@ export const orderbookSlice = createSlice({
   initialState,
   reducers: {
     snapshotData: (state, action: PayloadAction<MessageData>) => {
-      state.asks = setItem(action.payload, state, 'asks');
-      state.bids = setItem(action.payload, state, 'bids');
+      state.asks = snapshotItems(action.payload, state, 'asks');
+      state.bids = snapshotItems(action.payload, state, 'bids');
     },
     mergeData: (state, action: PayloadAction<MessageData>) => {
       state.asks = mergeItem(action.payload, state, 'asks');
