@@ -7,7 +7,10 @@ import { processItems } from './processItems';
 
 const initialState: OrderbookState = {
   productId: 'PI_XBTUSD',
-  isWebSocketPaused: false,
+  webSocket: {
+    isPaused: false,
+    isConnected: false,
+  },
   asks: [],
   bids: [],
   render: {
@@ -47,16 +50,22 @@ export const orderbookSlice = createSlice({
       state.render.highestTotal = Math.max(...totals);
     },
     pauseWebSocket: (state) => {
-      state.isWebSocketPaused = true;
+      state.webSocket.isPaused = true;
     },
     resumeWebSocket: (state) => {
-      state.isWebSocketPaused = false;
+      state.webSocket.isPaused = false;
+    },
+    webSocketConnected: (state) => {
+      state.webSocket.isConnected = true;
+    },
+    webSocketDisconnected: (state) => {
+      state.webSocket.isConnected = false;
     },
     toggleProduct: (state) => {
       state.bids = [];
       state.asks = [];
       state.render = initialState.render;
-      state.isWebSocketPaused = false;
+      state.webSocket.isPaused = false;
       state.productId =
         state.productId === 'PI_XBTUSD' ? 'PI_ETHUSD' : 'PI_XBTUSD';
     },
@@ -70,6 +79,8 @@ export const {
   toggleProduct,
   pauseWebSocket,
   resumeWebSocket,
+  webSocketConnected,
+  webSocketDisconnected,
 } = orderbookSlice.actions;
 
 export default orderbookSlice.reducer;

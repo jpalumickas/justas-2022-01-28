@@ -8,16 +8,16 @@ export const ConnectionTooltip = () => {
   const { top: safeAreaTop } = useSafeAreaInsets();
   const dispatch = useAppDispatch();
   const isWebSocketPaused = useAppSelector(
-    (state) => state.orderbook.isWebSocketPaused,
+    (state) => state.orderbook.webSocket.isPaused,
   );
-
-  const onResume = () => {
-    dispatch(resumeWebSocket());
-  };
 
   if (!isWebSocketPaused) {
     return null;
   }
+
+  const onResume = () => {
+    dispatch(resumeWebSocket());
+  };
 
   return (
     <Box
